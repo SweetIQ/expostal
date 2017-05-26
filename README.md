@@ -19,6 +19,6 @@ be found at [https://hexdocs.pm/expostal](https://hexdocs.pm/expostal).
 
 ### Dependencies
 
-Depends on system-wide installation of libpostal.
+Depends on [system-wide installation of libpostal](https://github.com/openvenues/libpostal#installation).
 
 [Libpostal]: https://github.com/openvenues/libpostal
