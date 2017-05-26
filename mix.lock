@@ -1,0 +1,1 @@
+%{"libpostal": {:git, "https://github.com/openvenues/libpostal.git", "8dd84b71bad4c70150e60c7bda8071b9bd8902f8", []}}

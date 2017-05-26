@@ -1,0 +1,64 @@
+{
+    "configurations": [
+        {
+            "name": "Mac",
+            "includePath": [
+                "${workspaceRoot}",
+                "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1",
+                "/usr/local/include",
+                "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/8.0.0/include",
+                "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include",
+                "/usr/include",
+                "/usr/local/Cellar/erlang/19.3/lib/erlang/erts-8.3/include"
+            ],
+            "defines": [],
+            "browse": {
+                "path": [
+                    "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include/c++/v1",
+                    "/usr/local/include",
+                    "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/8.0.0/include",
+                    "/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include",
+                    "/usr/include",
+                    "/usr/local/Cellar/erlang/19.3/lib/erlang/erts-8.3/include"
+                ],
+                "limitSymbolsToIncludedHeaders": true,
+                "databaseFilename": ""
+            }
+        },
+        {
+            "name": "Linux",
+            "includePath": [
+                "${workspaceRoot}",
+                "/usr/include",
+                "/usr/local/include"
+            ],
+            "defines": [],
+            "browse": {
+                "path": [
+                    "/usr/include",
+                    "/usr/local/include"
+                ],
+                "limitSymbolsToIncludedHeaders": true,
+                "databaseFilename": ""
+            }
+        },
+        {
+            "name": "Win32",
+            "includePath": [
+                "${workspaceRoot}",
+                "C:/Program Files (x86)/Microsoft Visual Studio 14.0/VC/include"
+            ],
+            "defines": [
+                "_DEBUG",
+                "UNICODE"
+            ],
+            "browse": {
+                "path": [
+                    "C:/Program Files (x86)/Microsoft Visual Studio 14.0/VC/include/*"
+                ],
+                "limitSymbolsToIncludedHeaders": true,
+                "databaseFilename": ""
+            }
+        }
+    ]
+}
