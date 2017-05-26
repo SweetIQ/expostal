@@ -21,6 +21,8 @@ defmodule Expostal.Mixfile do
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
      compilers: [:libpostal, :elixir, :app],
+     docs: [main: "Expostal",
+       extras: ["README.md"]],
      deps: deps()]
   end
 
@@ -42,6 +44,6 @@ defmodule Expostal.Mixfile do
   #
   # Type "mix help deps" for more examples and options
   defp deps do
-    []
+    [{:ex_doc, "~> 0.14", only: :dev, runtime: false}]
   end
 end
