@@ -11,31 +11,39 @@ typedef struct {
 static ERL_NIF_TERM
 parse_address(ErlNifEnv* env, int argc, const ERL_NIF_TERM argv[]) {
   size_t i;
-  ERL_NIF_TERM components = enif_make_new_map(env);
-  char *address = malloc(sizeof(char) * MAX_ADDR_LEN);
   libpostal_address_parser_options_t options = libpostal_get_address_parser_default_options();
-  enif_get_string(env, argv[0], address, MAX_ADDR_LEN, ERL_NIF_LATIN1);
-  libpostal_address_parser_response_t *response = libpostal_parse_address(address, options);
+  ERL_NIF_TERM components = enif_make_new_map(env);
+  ErlNifBinary address_bin;
+  if (!enif_inspect_iolist_as_binary(env, argv[0], &address_bin)) {
+    return enif_make_badarg(env);
+  }
+  libpostal_address_parser_response_t *response = libpostal_parse_address(address_bin.data, options);
 
+  char *component, *label;
+  ErlNifBinary component_bin;
 
   for (i = 0; i < response->num_components; i++) {
-    char *component = response->components[i];
-    char *label = response->labels[i];
+    component = response->components[i];
+    label = response->labels[i];
+
+    enif_alloc_binary(strlen(component), &component_bin);
+    strcpy(component_bin.data, component);
 
     enif_make_map_put(env, components,
                       enif_make_atom(env, label),
-                      enif_make_string(env, component, ERL_NIF_LATIN1),
+                      enif_make_binary(env, &component_bin),
                       &components);
   }
 
   libpostal_address_parser_response_destroy(response);
 
-  free(address);
+  enif_release_binary(&address_bin);
+
   return components;
 }
 
 static ErlNifFunc funcs[] = {
-  { "parse_address_c", 1,  parse_address }
+  { "parse_address", 1,  parse_address }
 };
 
 static int

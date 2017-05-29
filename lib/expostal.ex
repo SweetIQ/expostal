@@ -12,12 +12,6 @@ defmodule Expostal do
     :ok = :erlang.load_nif(path, 0)
   end
 
-  @spec parse_address_c(address :: charlist()) :: charlist()
-  defp parse_address_c(address)
-  defp parse_address_c(_) do
-    exit(:nif_library_not_loaded)
-  end
-
   @doc """
   Parse given address into a map of address components
 
@@ -29,8 +23,9 @@ defmodule Expostal do
 
   """
   @spec parse_address(address :: String.t) :: String.t
-  def parse_address(address) do
-    for {k, v} <- parse_address_c(to_charlist address), into: %{}, do: {k, to_string v}
+  def parse_address(address)
+  def parse_address(_) do
+    exit(:nif_library_not_loaded)
   end
 
 end
