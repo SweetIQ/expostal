@@ -1,12 +1,7 @@
 #include <libpostal/libpostal.h>
 #include <erl_nif.h>
 #include <stdio.h>
-
-#define PARSER_USAGE "Usage: parse_address(address[, options])"
-#define MAX_ADDR_LEN 255
-
-typedef struct {
-} expostal_priv;
+#include <string.h>
 
 static ERL_NIF_TERM
 parse_address(ErlNifEnv* env, int argc, const ERL_NIF_TERM argv[]) {
@@ -19,7 +14,7 @@ parse_address(ErlNifEnv* env, int argc, const ERL_NIF_TERM argv[]) {
   }
   libpostal_address_parser_response_t *response = libpostal_parse_address(address_bin.data, options);
 
-  char *component, *label;
+  const char *component, *label;
   ErlNifBinary component_bin;
 
   for (i = 0; i < response->num_components; i++) {
@@ -43,18 +38,11 @@ parse_address(ErlNifEnv* env, int argc, const ERL_NIF_TERM argv[]) {
 }
 
 static ErlNifFunc funcs[] = {
-  { "parse_address", 1,  parse_address }
+  { "parse_address", 1, parse_address }
 };
 
 static int
 load(ErlNifEnv* env, void** priv, ERL_NIF_TERM info) {
-  expostal_priv* data = enif_alloc(sizeof(expostal_priv));
-  if (data == NULL) {
-    return 1;
-  }
-
-  *priv = (void*) data;
-
   if (!libpostal_setup() || !libpostal_setup_parser()) {
     fprintf(stderr, "Error loading libpostal");
     return 1;
