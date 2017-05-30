@@ -21,7 +21,6 @@ defmodule Expostal.Expand do
      "781 franklin avenue crown heights brooklyn ny"]
 
   """
-
   @spec expand_address(address :: String.t) :: list(String.t)
   def expand_address(address)
   def expand_address(_) do
