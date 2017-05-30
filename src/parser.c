@@ -17,7 +17,8 @@ parse_address(ErlNifEnv *env, int argc, const ERL_NIF_TERM argv[])
   {
     return enif_make_badarg(env);
   }
-  libpostal_address_parser_response_t *response = libpostal_parse_address(address_bin.data, options);
+  char *address = strndup((char*) address_bin.data, address_bin.size);
+  libpostal_address_parser_response_t *response = libpostal_parse_address(address, options);
 
   const char *component, *label;
 
@@ -37,6 +38,7 @@ parse_address(ErlNifEnv *env, int argc, const ERL_NIF_TERM argv[])
 
   enif_release_binary(&address_bin);
   libpostal_address_parser_response_destroy(response);
+  free(address);
   pthread_mutex_unlock(&libpostal_mutex);
   return components;
 }
@@ -48,25 +50,27 @@ static int
 load(ErlNifEnv *env, void **priv, ERL_NIF_TERM info)
 {
   pthread_mutex_lock(&libpostal_mutex);
-  sem_libpostal_setup = sem_open("libpostal_setup", O_CREAT, 0, 0);
-  sem_libpostal_parser_setup = sem_open("libpostal_parser_setup", O_CREAT, 0, 0);
-  sem_wait(sem_libpostal_setup);
-  if (!libpostal_setup())
-  {
-    fprintf(stderr, "Error loading libpostal");
-    sem_post(sem_libpostal_setup);
-    pthread_mutex_unlock(&libpostal_mutex);
-    return 1;
-  }
-  sem_wait(sem_libpostal_parser_setup);
-  if (!libpostal_setup_parser())
-  {
-    fprintf(stderr, "Error loading libpostal parser");
-    sem_post(sem_libpostal_parser_setup);
-    pthread_mutex_unlock(&libpostal_mutex);
-    return 1;
+  if (!is_libpostal_setup) {
+    if (!libpostal_setup())
+    {
+      fprintf(stderr, "Error loading libpostal");
+      pthread_mutex_unlock(&libpostal_mutex);
+      return 1;
+    }
+    is_libpostal_setup = 1;
   }
 
+  if (!is_libpostal_parser_setup) {
+    if (!libpostal_setup_parser())
+    {
+      fprintf(stderr, "Error loading libpostal parser");
+      pthread_mutex_unlock(&libpostal_mutex);
+      return 1;
+    }
+    is_libpostal_parser_setup = 1;
+  }
+
+  libpostal_reference_count++;
   pthread_mutex_unlock(&libpostal_mutex);
   return 0;
 }
@@ -87,10 +91,12 @@ static void
 unload(ErlNifEnv *env, void *priv)
 {
   pthread_mutex_lock(&libpostal_mutex);
-  libpostal_teardown();
-  sem_post(sem_libpostal_setup);
-  libpostal_teardown_parser();
-  sem_post(sem_libpostal_parser_setup);
+  libpostal_reference_count--;
+  if (libpostal_reference_count == 0)
+  {
+    libpostal_teardown();
+    libpostal_teardown_parser();
+  }
   enif_free(priv);
   pthread_mutex_unlock(&libpostal_mutex);
 }

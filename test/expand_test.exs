@@ -12,6 +12,9 @@ defmodule ExpostalTest.Expand do
 
       assert address_in_expansion("Friedrichstraße 128, Berlin, Germany", "friedrich straße 128 berlin germany")
 
+      assert address_in_expansion("MAPLE ST.", "maple street")
+      assert address_in_expansion("MAPLE ST.", "maple street")
+
     end
   end
 

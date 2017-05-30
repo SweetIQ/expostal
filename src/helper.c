@@ -10,7 +10,9 @@
 #include <semaphore.h>
 
 static pthread_mutex_t libpostal_mutex = PTHREAD_MUTEX_INITIALIZER;
-static sem_t *sem_libpostal_setup;
-static sem_t *sem_libpostal_parser_setup;
-static sem_t *sem_libpostal_language_classifier_setup;
 
+static int is_libpostal_setup = 0;
+static int is_libpostal_parser_setup = 0;
+static int is_libpostal_language_classifier_setup = 0;
+
+static int libpostal_reference_count = 0;
