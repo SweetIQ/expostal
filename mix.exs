@@ -24,7 +24,7 @@ defmodule Expostal.Mixfile do
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,
      compilers: [:libpostal, :elixir, :app],
-     docs: [main: "Expostal",
+     docs: [main: "readme",
        extras: ["README.md"]],
      deps: deps()]
   end
