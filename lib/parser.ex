@@ -1,6 +1,6 @@
 defmodule Expostal.Parser do
   @moduledoc """
-  Expostal is an Elixir binding for Openvenue's Libpostal, which does parsing of street addresses.
+  Expostal is an Elixir binding for Openvenue's Libpostal, which does parsing of street addresses. This module does address parsing.
   """
 
   @on_load { :init, 0 }

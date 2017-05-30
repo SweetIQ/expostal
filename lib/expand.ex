@@ -1,6 +1,6 @@
 defmodule Expostal.Expand do
   @moduledoc """
-  Expostal is an Elixir binding for Openvenue's Libpostal, which does parsing of street addresses.
+  Expostal is an Elixir binding for Openvenue's Libpostal, which does parsing of street addresses. This module does address expansion.
   """
 
   @on_load { :init, 0 }
@@ -16,6 +16,9 @@ defmodule Expostal.Expand do
   Expand given address into a list of expansions
 
   ## Examples
+    iex> Expostal.Expand.expand_address("781 Franklin Ave Crown Hts Brooklyn NY")
+    ["781 franklin avenue crown heights brooklyn new york",
+     "781 franklin avenue crown heights brooklyn ny"]
 
   """
 
