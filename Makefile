@@ -5,7 +5,7 @@ ERLANG_PATH = $(shell erl -eval 'io:format("~s", [lists:concat([code:root_dir(),
 CFLAGS += -I$(ERLANG_PATH)
 CFLAGS += -lpostal
 
-ifeq ($(wildcard deps/hoedown),)
+ifeq ($(wildcard deps/libpostal),)
 	LIBPOSTAL_PATH = ../libpostal
 else
 	LIBPOSTAL_PATH = deps/libpostal
@@ -28,9 +28,12 @@ all: libpostal
 libpostal:
 	$(MIX) compile
 
-priv/expostal.so: src/expostal.c
-	$(CC) $(CFLAGS) -shared $(LDFLAGS) -o $@ src/expostal.c
+priv/parser.so: src/parser.c
+	$(CC) $(CFLAGS) -shared $(LDFLAGS) -o $@ src/parser.c
+
+priv/expand.so: src/expand.c
+	$(CC) $(CFLAGS) -shared $(LDFLAGS) -o $@ src/expand.c
 
 clean:
 	$(MIX) clean
-	$(RM) priv/expostal.so
+	$(RM) priv/*

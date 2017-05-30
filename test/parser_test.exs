@@ -1,10 +1,9 @@
-defmodule ExpostalTest do
+defmodule ExpostalTest.Parser do
   use ExUnit.Case
-  doctest Expostal
-
+  doctest Expostal.Parser
   test "parse address" do
     address = "615 Rene Levesque Ouest, Montreal, QC, Canada"
-    parsed = Expostal.parse_address(address)
+    parsed = Expostal.Parser.parse_address(address)
     assert parsed == %{
       country: "canada",
       city: "montreal",
@@ -12,24 +11,21 @@ defmodule ExpostalTest do
       road: "rene levesque ouest",
       state: "qc"
     }
-  end
 
-  test "parse non-ascii address" do
-    address = "92 rue de l'Église"
-    parsed = Expostal.parse_address(address)
+    address = "92 rue de l'Église, QC"
+    parsed = Expostal.Parser.parse_address(address)
     assert parsed == %{
       house_number: "92",
       road: "rue de l'église",
+      state: "qc"
     }
-  end
 
-  test "parse Chinese address" do
-    address = "天津市红桥区一号路 188号"
-    parsed = Expostal.parse_address(address)
+    address = "天津市红桥区一号路一百号"
+    parsed = Expostal.Parser.parse_address(address)
     assert parsed == %{
       city: "天津市红桥区",
       road: "一号路",
-      house_number: "188号",
+      house_number: "一百号",
     }
   end
 end

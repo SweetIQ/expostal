@@ -1,10 +1,13 @@
 defmodule Mix.Tasks.Compile.Libpostal do
   def run(_) do
     if match? {:win32, _}, :os.type do
-      {result, _error_code} = System.cmd("nmake", ["/F", "Makefile.win", "priv\\exparser.dll"], stderr_to_stdout: true)
-      IO.binwrite result
+      # libpostal does not support Windows unfortunately.
+      IO.warn("Windows is not supported.")
+      exit(1)
     else
-      {result, _error_code} = System.cmd("make", ["priv/expostal.so"], stderr_to_stdout: true)
+      {result, _error_code} = System.cmd("make", ["priv/parser.so"], stderr_to_stdout: true)
+      IO.binwrite result
+      {result, _error_code} = System.cmd("make", ["priv/expand.so"], stderr_to_stdout: true)
       IO.binwrite result
     end
     :ok
