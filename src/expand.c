@@ -8,7 +8,6 @@
 
 static ERL_NIF_TERM
 expand_address(ErlNifEnv* env, int argc, const ERL_NIF_TERM argv[]) {
-  pthread_mutex_lock( &libpostal_mutex );
   libpostal_normalize_options_t options = libpostal_get_default_options();
   ErlNifBinary address_bin;
   if (!enif_inspect_iolist_as_binary(env, argv[0], &address_bin))
@@ -31,7 +30,6 @@ expand_address(ErlNifEnv* env, int argc, const ERL_NIF_TERM argv[]) {
 
   ERL_NIF_TERM expansions_list_term = enif_make_list_from_array(env, expansion_terms, num_expansions);
 
-  pthread_mutex_unlock( &libpostal_mutex );
   free(expansion_terms);
   free(address);
   return expansions_list_term;

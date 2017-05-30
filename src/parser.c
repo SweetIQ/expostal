@@ -8,7 +8,6 @@
 static ERL_NIF_TERM
 parse_address(ErlNifEnv *env, int argc, const ERL_NIF_TERM argv[])
 {
-  pthread_mutex_lock(&libpostal_mutex);
   size_t i;
   libpostal_address_parser_options_t options = libpostal_get_address_parser_default_options();
   ERL_NIF_TERM components = enif_make_new_map(env);
@@ -39,7 +38,6 @@ parse_address(ErlNifEnv *env, int argc, const ERL_NIF_TERM argv[])
   enif_release_binary(&address_bin);
   libpostal_address_parser_response_destroy(response);
   free(address);
-  pthread_mutex_unlock(&libpostal_mutex);
   return components;
 }
 
