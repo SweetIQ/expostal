@@ -64,8 +64,8 @@ defmodule Expostal.Mixfile do
   defp package do
     # These are the default files included in the package
     [
-      name: :postgrex,
-      files: ["src", "lib", "mix.exs", "README*", "readme*", "LICENSE*", "license*"],
+      name: :expostal,
+      files: ["src", "lib", "mix.exs", "README*", "LICENSE*"],
       maintainers: ["Meng Xuan Xia"],
       licenses: ["MIT"],
       links: %{"GitHub" => "https://github.com/SweetIQ/expostal"}
