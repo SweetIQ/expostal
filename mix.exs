@@ -26,7 +26,12 @@ defmodule Expostal.Mixfile do
      compilers: [:libpostal, :elixir, :app],
      docs: [main: "readme",
        extras: ["README.md"]],
-     deps: deps()]
+     deps: deps(),
+     description: description(),
+     package: package(),
+     name: "Expostal",
+     source_url: "https://github.com/SweetIQ/expostal",
+     homepage_url: "https://github.com/SweetIQ/expostal"]
   end
 
   # Configuration for the OTP application
@@ -34,7 +39,7 @@ defmodule Expostal.Mixfile do
   # Type "mix help compile.app" for more information
   def application do
     # Specify extra applications you'll use from Erlang/Elixir
-    [extra_applications: [:logger]]
+    []
   end
 
   # Dependencies can be Hex packages:
@@ -48,5 +53,22 @@ defmodule Expostal.Mixfile do
   # Type "mix help deps" for more examples and options
   defp deps do
     [{:ex_doc, "~> 0.14", only: :dev, runtime: false}]
+  end
+
+  defp description do
+    """
+    Expostal is an Elixir binding for Openvenue's Libpostal.
+    Expostal parses street address and expand address acroymes with high accuracy.
+    """
+  end
+  defp package do
+    # These are the default files included in the package
+    [
+      name: :postgrex,
+      files: ["src", "lib", "mix.exs", "README*", "readme*", "LICENSE*", "license*"],
+      maintainers: ["Meng Xuan Xia"],
+      licenses: ["MIT"],
+      links: %{"GitHub" => "https://github.com/SweetIQ/expostal"}
+    ]
   end
 end

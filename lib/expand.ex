@@ -1,6 +1,6 @@
 defmodule Expostal.Expand do
   @moduledoc """
-  Address Expansion module for Openvenue's Libpostal, which does expands addresses.
+  Address expansion module for Openvenue's Libpostal, which does expands addresses.
   """
 
   @on_load { :init, 0 }

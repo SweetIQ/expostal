@@ -1,11 +1,13 @@
 # Expostal
 
-Expostal is an Elixir binding for [Libpostal].
+[![Build Status](https://travis-ci.org/SweetIQ/expostal.svg?branch=master)](https://travis-ci.org/SweetIQ/expostal)
+
+Elixir binding for [Libpostal] - a library for parsing/normalizing street addresses around the world. 
+Powered by statistical NLP and open geo data.
 
 ## Installation
 
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed
-by adding `expostal` to your list of dependencies in `mix.exs`:
+The package can be installed by adding `expostal` to your list of dependencies in `mix.exs`:
 
 ```elixir
 def deps do
@@ -13,12 +15,13 @@ def deps do
 end
 ```
 
-Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
-and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at [https://hexdocs.pm/expostal](https://hexdocs.pm/expostal).
-
 ### Dependencies
 
 Depends on [system-wide installation of libpostal](https://github.com/openvenues/libpostal#installation).
 
 [Libpostal]: https://github.com/openvenues/libpostal
+
+## Documentation
+
+View the docs on [https://hexdocs.pm/expostal](https://hexdocs.pm/expostal), or
+generate the docs locally with `mix docs`.
