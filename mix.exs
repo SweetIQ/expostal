@@ -1,7 +1,5 @@
 defmodule Mix.Tasks.Compile.Libpostal do
   def run(_) do
-    if Mix.env != :test, do: File.rm_rf("priv")
-      File.mkdir("priv")
     if match? {:win32, _}, :os.type do
       # libpostal does not support Windows unfortunately.
       IO.warn("Windows is not supported.")
@@ -12,7 +10,6 @@ defmodule Mix.Tasks.Compile.Libpostal do
       {result, _error_code} = System.cmd("make", ["priv/expand.so"], stderr_to_stdout: true)
       IO.binwrite result
     end
-    Mix.Project.build_structure
     :ok
   end
 end

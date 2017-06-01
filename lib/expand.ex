@@ -17,7 +17,6 @@ defmodule Expostal.Expand do
 
   ## Examples
     iex> Expostal.Expand.expand_address("781 Franklin Ave Crown Hts Brooklyn NY")
-
     ["781 franklin avenue crown heights brooklyn new york",
      "781 franklin avenue crown heights brooklyn ny"]
 
