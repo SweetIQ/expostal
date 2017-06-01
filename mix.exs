@@ -1,5 +1,7 @@
 defmodule Mix.Tasks.Compile.Libpostal do
   def run(_) do
+    if Mix.env != :test, do: File.rm_rf("priv")
+      File.mkdir("priv")
     if match? {:win32, _}, :os.type do
       # libpostal does not support Windows unfortunately.
       IO.warn("Windows is not supported.")
@@ -10,6 +12,7 @@ defmodule Mix.Tasks.Compile.Libpostal do
       {result, _error_code} = System.cmd("make", ["priv/expand.so"], stderr_to_stdout: true)
       IO.binwrite result
     end
+    Mix.Project.build_structure
     :ok
   end
 end
@@ -65,7 +68,7 @@ defmodule Expostal.Mixfile do
     # These are the default files included in the package
     [
       name: :expostal,
-      files: ["src", "lib", "mix.exs", "README*", "LICENSE*"],
+      files: ["src", "lib", "mix.exs", "README*", "LICENSE*", "Makefile"],
       maintainers: ["Meng Xuan Xia"],
       licenses: ["MIT"],
       links: %{"GitHub" => "https://github.com/SweetIQ/expostal"}
