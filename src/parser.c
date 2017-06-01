@@ -8,7 +8,6 @@
 static ERL_NIF_TERM
 parse_address(ErlNifEnv *env, int argc, const ERL_NIF_TERM argv[])
 {
-  size_t i;
   libpostal_address_parser_options_t options = libpostal_get_address_parser_default_options();
   ERL_NIF_TERM components = enif_make_new_map(env);
   ErlNifBinary address_bin;
@@ -21,6 +20,7 @@ parse_address(ErlNifEnv *env, int argc, const ERL_NIF_TERM argv[])
 
   const char *component, *label;
 
+  size_t i;
   for (i = 0; i < response->num_components; i++)
   {
     component = response->components[i];

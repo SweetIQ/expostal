@@ -19,7 +19,8 @@ expand_address(ErlNifEnv* env, int argc, const ERL_NIF_TERM argv[]) {
   char **expansions  = libpostal_expand_address(address, options, &num_expansions);
 
   ERL_NIF_TERM *expansion_terms = malloc(sizeof(ERL_NIF_TERM) * num_expansions);
-  for (int i = 0; i < num_expansions; i++)
+  int i;
+  for (i = 0; i < num_expansions; i++)
   {
     char *expansion = expansions[i];
     ERL_NIF_TERM expansion_term;
