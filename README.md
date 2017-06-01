@@ -21,6 +21,27 @@ Depends on [system-wide installation of libpostal](https://github.com/openvenues
 
 [Libpostal]: https://github.com/openvenues/libpostal
 
+## Usage
+
+Parsing an address: 
+
+```
+iex> Expostal.Parser.parse_address("615 Rene Levesque Ouest, Montreal, QC, Canada")
+
+%{city: "montreal", country: "canada", house_number: "615",
+  road: "rene levesque ouest", state: "qc"}
+
+```
+
+Expanding an address: 
+
+```
+iex> Expostal.Expand.expand_address("781 Franklin Ave Crown Hts Brooklyn NY")
+
+["781 franklin avenue crown heights brooklyn new york",
+  "781 franklin avenue crown heights brooklyn ny"]
+```
+
 ## Documentation
 
 View the docs on [https://hexdocs.pm/expostal](https://hexdocs.pm/expostal), or
