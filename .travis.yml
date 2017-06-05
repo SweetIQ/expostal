@@ -1,0 +1,38 @@
+addons:
+    apt:
+        sources:
+        - ubuntu-toolchain-r-test
+        packages:
+        - gcc-4.8
+        - libsnappy-dev
+        - realpath
+
+language: elixir
+elixir:
+  - 1.4.4
+
+install:
+  - export CC="clang"
+  - mkdir _deps
+  - git clone https://github.com/openvenues/libpostal
+  - cd libpostal
+  - ./bootstrap.sh
+  - ./configure --datadir=$(pwd)/data --prefix=$(realpath $(pwd)/../_deps) --bindir=$(realpath $(pwd)/../_deps)
+  - make install
+  - cd ..
+  - export CFLAGS=-I$(pwd)/_deps/include
+  - export LDFLAGS=-L$(pwd)/_deps/lib
+  - export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$(pwd)/_deps/lib
+  - export LD_RUN_PATH=$LD_RUN_PATH:$(pwd)/_deps/lib
+  - mix local.hex --force
+  - mix local.rebar --force
+  - mix deps.get
+  - mix compile
+
+script:
+  - export CC="clang"
+  - export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$(pwd)/_deps/lib
+  - mix test
+
+notifications:
+  email: false

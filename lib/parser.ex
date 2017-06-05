@@ -18,7 +18,6 @@ defmodule Expostal.Parser do
   ## Examples
 
       iex> Expostal.Parser.parse_address("615 Rene Levesque Ouest, Montreal, QC, Canada")
-
       %{city: "montreal", country: "canada", house_number: "615",
         road: "rene levesque ouest", state: "qc"}
 
