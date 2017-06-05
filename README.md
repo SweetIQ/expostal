@@ -1,6 +1,8 @@
-# Expostal
+# ![Elixir](https://hexdocs.pm/ex_unit/assets/logo.png) expostal
 
 [![Build Status](https://travis-ci.org/SweetIQ/expostal.svg?branch=master)](https://travis-ci.org/SweetIQ/expostal)
+[![Hex.pm](https://img.shields.io/hexpm/v/expostal.svg)](https://hex.pm/packages/expostal)
+[![license](https://img.shields.io/github/license/sweetiq/expostal.svg)](https://github.com/SweetIQ/expostal/blob/master/LICENSE)
 
 Elixir binding for [Libpostal] - a library for parsing/normalizing street addresses around the world. 
 Powered by statistical NLP and open geo data.
