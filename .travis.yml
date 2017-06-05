@@ -11,7 +11,7 @@ language: elixir
 elixir:
   - 1.4.4
 
-script:
+install:
   - export CC="clang"
   - mkdir _deps
   - git clone https://github.com/openvenues/libpostal
@@ -27,6 +27,11 @@ script:
   - mix local.hex --force
   - mix local.rebar --force
   - mix deps.get
+  - mix compile
+
+script:
+  - export CC="clang"
+  - export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$(pwd)/_deps/lib
   - mix test
 
 notifications:
