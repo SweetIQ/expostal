@@ -5,7 +5,7 @@ defmodule Mix.Tasks.Compile.Libpostal do
       IO.warn("Windows is not supported.")
       exit(1)
     else
-      {:ok, _} = File.mkdir_p("priv")
+      File.mkdir_p("priv")
       {result, _error_code} = System.cmd("make", ["priv/parser.so"], stderr_to_stdout: true)
       IO.binwrite result
       {result, _error_code} = System.cmd("make", ["priv/expand.so"], stderr_to_stdout: true)
