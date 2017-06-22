@@ -3,7 +3,6 @@
 #include <stdio.h>
 #include <string.h>
 #include <pthread.h>
-#include "helper.c"
 
 static ERL_NIF_TERM
 parse_address(ErlNifEnv *env, int argc, const ERL_NIF_TERM argv[])
@@ -47,29 +46,17 @@ static ErlNifFunc funcs[] = {
 static int
 load(ErlNifEnv *env, void **priv, ERL_NIF_TERM info)
 {
-  pthread_mutex_lock(&libpostal_mutex);
-  if (!is_libpostal_setup) {
-    if (!libpostal_setup())
-    {
-      fprintf(stderr, "Error loading libpostal");
-      pthread_mutex_unlock(&libpostal_mutex);
-      return 1;
-    }
-    is_libpostal_setup = 1;
+  if (!libpostal_setup())
+  {
+    fprintf(stderr, "Error loading libpostal");
+    return 1;
   }
 
-  if (!is_libpostal_parser_setup) {
-    if (!libpostal_setup_parser())
-    {
-      fprintf(stderr, "Error loading libpostal parser");
-      pthread_mutex_unlock(&libpostal_mutex);
-      return 1;
-    }
-    is_libpostal_parser_setup = 1;
+  if (!libpostal_setup_parser())
+  {
+    fprintf(stderr, "Error loading libpostal parser");
+    return 1;
   }
-
-  libpostal_reference_count++;
-  pthread_mutex_unlock(&libpostal_mutex);
   return 0;
 }
 
@@ -88,15 +75,9 @@ upgrade(ErlNifEnv *env, void **priv, void **old_priv, ERL_NIF_TERM info)
 static void
 unload(ErlNifEnv *env, void *priv)
 {
-  pthread_mutex_lock(&libpostal_mutex);
-  libpostal_reference_count--;
-  if (libpostal_reference_count == 0)
-  {
-    libpostal_teardown();
-    libpostal_teardown_parser();
-  }
+  libpostal_teardown();
+  libpostal_teardown_parser();
   enif_free(priv);
-  pthread_mutex_unlock(&libpostal_mutex);
 }
 
 ERL_NIF_INIT(Elixir.Expostal.Parser, funcs, &load, &reload, &upgrade, &unload)
