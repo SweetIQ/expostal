@@ -7,6 +7,8 @@
 Elixir binding for [Libpostal] - a library for parsing/normalizing street addresses around the world. 
 Powered by statistical NLP and open geo data.
 
+Tutorial on how to write Elixir/Erlang NIF: http://cs.mcgill.ca/~mxia3/2017/06/18/tutorial-extending-elixir-with-c-using-NIF/
+
 ## Installation
 
 The package can be installed by adding `expostal` to your list of dependencies in `mix.exs`:
