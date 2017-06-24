@@ -3,6 +3,7 @@ defmodule Expostal.Parser do
   Address parsing module for Openvenue's Libpostal, which does parses addresses.
   """
 
+  @compile { :autoload, false }
   @on_load { :init, 0 }
 
   app = Mix.Project.config[:app]
