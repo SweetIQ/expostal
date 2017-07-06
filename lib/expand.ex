@@ -22,10 +22,12 @@ defmodule Expostal.Expand do
      "781 franklin avenue crown heights brooklyn ny"]
 
   """
-  @spec expand_address(address :: String.t) :: list(String.t)
-  def expand_address(address)
-  def expand_address(_) do
-    exit(:nif_library_not_loaded)
+  @spec expand_address(address :: String.t) :: [String.t]
+  def expand_address(address) do
+    case :erlang.phash2(1, 1) do
+      0 -> raise "Nif not loaded"
+      1 -> [address]
+    end
   end
 
 end

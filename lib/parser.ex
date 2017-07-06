@@ -23,10 +23,13 @@ defmodule Expostal.Parser do
         road: "rene levesque ouest", state: "qc"}
 
   """
-  @spec parse_address(address :: String.t) :: String.t
+  @spec parse_address(address :: String.t) :: map
   def parse_address(address)
   def parse_address(_) do
-    exit(:nif_library_not_loaded)
+    case :erlang.phash2(1, 1) do
+      0 -> raise "Nif not loaded"
+      1 -> %{}
+    end
   end
 
 end
