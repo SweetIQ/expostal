@@ -33,6 +33,7 @@ script:
   - export CC="clang"
   - export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$(pwd)/_deps/lib
   - mix test
+  - mix dialyzer
 
 notifications:
   email: false
