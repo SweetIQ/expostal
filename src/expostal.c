@@ -4,7 +4,7 @@
 #include <string.h>
 #include <pthread.h>
 
-#define HAS_DIRTY_SCHEDULER (ERL_NIF_MAJOR_VERSION > 2 || (ERL_NIF_MAJOR_VERSION == 2 && ERL_NIF_MINOR_VERSION >= 6))
+#define HAS_DIRTY_SCHEDULER (ERL_NIF_MAJOR_VERSION > 2 || (ERL_NIF_MAJOR_VERSION == 2 && ERL_NIF_MINOR_VERSION >= 10))
 
 static pthread_mutex_t* expostal_lock;
 static int is_setup = 0;
@@ -22,6 +22,12 @@ int do_bootstrap() {
     if (!libpostal_setup_parser())
     {
       fprintf(stderr, "Error loading libpostal parser\r\n");
+      return 1;
+    }
+
+    if (!libpostal_setup_language_classifier())
+    {
+      fprintf(stderr, "Error loading language classifier\r\n");
       return 1;
     }
     is_setup = 1;
@@ -135,6 +141,7 @@ static ErlNifFunc funcs[] = {
     {"bootstrap", 0, bootstrap},
     {"parse_address", 1, parse_address},
     {"expand_address", 1, expand_address}
+};
 #endif
 
 static int

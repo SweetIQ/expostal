@@ -42,7 +42,7 @@ defmodule Expostal do
 
   ## Examples
 
-      iex> Expostal.Parser.parse_address("615 Rene Levesque Ouest, Montreal, QC, Canada")
+      iex> Expostal.parse_address("615 Rene Levesque Ouest, Montreal, QC, Canada")
       %{city: "montreal", country: "canada", house_number: "615",
         road: "rene levesque ouest", state: "qc"}
 
@@ -60,7 +60,7 @@ defmodule Expostal do
   Expand given address into a list of expansions
 
   ## Examples
-    iex> Expostal.Expand.expand_address("781 Franklin Ave Crown Hts Brooklyn NY")
+    iex> Expostal.expand_address("781 Franklin Ave Crown Hts Brooklyn NY")
     ["781 franklin avenue crown heights brooklyn new york",
      "781 franklin avenue crown heights brooklyn ny"]
 
