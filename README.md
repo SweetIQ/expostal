@@ -15,7 +15,7 @@ The package can be installed by adding `expostal` to your list of dependencies i
 
 ```elixir
 def deps do
-  [{:expostal, "~> 0.1.0"}]
+  [{:expostal, "~> 0.2.0"}]
 end
 ```
 
@@ -30,7 +30,7 @@ Depends on [system-wide installation of libpostal](https://github.com/openvenues
 Parsing an address: 
 
 ```
-iex> Expostal.Parser.parse_address("615 Rene Levesque Ouest, Montreal, QC, Canada")
+iex> Expostal.parse_address("615 Rene Levesque Ouest, Montreal, QC, Canada")
 
 %{city: "montreal", country: "canada", house_number: "615",
   road: "rene levesque ouest", state: "qc"}
@@ -40,7 +40,7 @@ iex> Expostal.Parser.parse_address("615 Rene Levesque Ouest, Montreal, QC, Canad
 Expanding an address: 
 
 ```
-iex> Expostal.Expand.expand_address("781 Franklin Ave Crown Hts Brooklyn NY")
+iex> Expostal.expand_address("781 Franklin Ave Crown Hts Brooklyn NY")
 
 ["781 franklin avenue crown heights brooklyn new york",
   "781 franklin avenue crown heights brooklyn ny"]
