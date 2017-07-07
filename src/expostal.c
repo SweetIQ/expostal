@@ -4,6 +4,8 @@
 #include <string.h>
 #include <pthread.h>
 
+#define HAS_DIRTY_SCHEDULER (ERL_NIF_MAJOR_VERSION > 2 || (ERL_NIF_MAJOR_VERSION == 2 && ERL_NIF_MINOR_VERSION >= 6))
+
 static pthread_mutex_t* expostal_lock;
 static int is_setup = 0;
 
@@ -122,11 +124,18 @@ parse_address(ErlNifEnv *env, int argc, const ERL_NIF_TERM argv[])
 }
 
 // map our C functions to their Elixir equivalents
+#if HAS_DIRTY_SCHEDULER
 static ErlNifFunc funcs[] = {
     {"bootstrap", 0, bootstrap, ERL_NIF_DIRTY_JOB_IO_BOUND},
     {"parse_address", 1, parse_address, ERL_NIF_DIRTY_JOB_IO_BOUND},
     {"expand_address", 1, expand_address, ERL_NIF_DIRTY_JOB_IO_BOUND}
 };
+#else
+static ErlNifFunc funcs[] = {
+    {"bootstrap", 0, bootstrap},
+    {"parse_address", 1, parse_address},
+    {"expand_address", 1, expand_address}
+#endif
 
 static int
 load(ErlNifEnv *env, void **priv, ERL_NIF_TERM info)
