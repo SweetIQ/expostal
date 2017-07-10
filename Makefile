@@ -28,11 +28,8 @@ all: libpostal
 libpostal:
 	$(MIX) compile
 
-priv/parser.so: src/parser.c
-	$(CC) $(CFLAGS) -shared $(LDFLAGS) -o $@ src/parser.c
-
-priv/expand.so: src/expand.c
-	$(CC) $(CFLAGS) -shared $(LDFLAGS) -o $@ src/expand.c
+priv/expostal.so: src/expostal.c
+	$(CC) $(CFLAGS) -shared $(LDFLAGS) -o $@ src/expostal.c
 
 clean:
 	$(MIX) clean

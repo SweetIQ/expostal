@@ -6,9 +6,7 @@ defmodule Mix.Tasks.Compile.Libpostal do
       exit(1)
     else
       File.mkdir_p("priv")
-      {result, _error_code} = System.cmd("make", ["priv/parser.so"], stderr_to_stdout: true)
-      IO.binwrite result
-      {result, _error_code} = System.cmd("make", ["priv/expand.so"], stderr_to_stdout: true)
+      {result, _error_code} = System.cmd("make", ["priv/expostal.so"], stderr_to_stdout: true)
       IO.binwrite result
     end
     :ok
@@ -20,7 +18,7 @@ defmodule Expostal.Mixfile do
 
   def project do
     [app: :expostal,
-     version: "0.1.5",
+     version: "0.2.0",
      elixir: "~> 1.4",
      build_embedded: Mix.env == :prod,
      start_permanent: Mix.env == :prod,

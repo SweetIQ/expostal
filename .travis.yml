@@ -9,7 +9,7 @@ addons:
 
 language: elixir
 elixir:
-  - 1.4.4
+  - 1.4.5
 
 install:
   - export CC="clang"
