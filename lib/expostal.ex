@@ -8,7 +8,7 @@ defmodule Expostal do
 
   app = Mix.Project.config[:app]
 
-  defp init do
+  def init do
     path = :filename.join(:code.priv_dir(unquote(app)), 'expostal')
     :ok = :erlang.load_nif(path, 0)
   end
