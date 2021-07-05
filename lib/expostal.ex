@@ -73,4 +73,12 @@ defmodule Expostal do
       1 -> [address]
     end
   end
+
+  @spec classify_language(address :: String.t()) :: {float, [String.t()]}
+  def classify_language(address) do
+    case :erlang.phash2(1, 1) do
+      0 -> raise "Nif not loaded"
+      1 -> [address]
+    end
+  end
 end
