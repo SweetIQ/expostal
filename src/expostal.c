@@ -46,8 +46,8 @@ static ERL_NIF_TERM bootstrap(ErlNifEnv *env, int argc,
   }
 }
 
-static ERL_NIF_TERM expand_address(ErlNifEnv *env, int argc,
-                                   const ERL_NIF_TERM argv[]) {
+static ERL_NIF_TERM _expand_address(ErlNifEnv *env, int argc,
+                                    const ERL_NIF_TERM argv[]) {
   // libpostal is not threadsafe (see
   // https://github.com/openvenues/libpostal/issues/34)
   pthread_mutex_lock(expostal_lock);
@@ -56,6 +56,7 @@ static ERL_NIF_TERM expand_address(ErlNifEnv *env, int argc,
   libpostal_normalize_options_t options = libpostal_get_default_options();
   ErlNifBinary address_bin;
   if (!enif_inspect_iolist_as_binary(env, argv[0], &address_bin)) {
+    pthread_mutex_unlock(expostal_lock);
     return enif_make_badarg(env);
   }
   char *address = strndup((char *)address_bin.data, address_bin.size);
@@ -70,7 +71,7 @@ static ERL_NIF_TERM expand_address(ErlNifEnv *env, int argc,
     ERL_NIF_TERM expansion_term;
     unsigned char *expansion_term_bin =
         enif_make_new_binary(env, strlen(expansion), &expansion_term);
-    strncpy((char *)expansion_term_bin, expansion, strlen(expansion));
+    strcpy((char *)expansion_term_bin, expansion);
     expansion_terms[i] = expansion_term;
   }
 
@@ -84,8 +85,8 @@ static ERL_NIF_TERM expand_address(ErlNifEnv *env, int argc,
   return expansions_list_term;
 }
 
-static ERL_NIF_TERM parse_address(ErlNifEnv *env, int argc,
-                                  const ERL_NIF_TERM argv[]) {
+static ERL_NIF_TERM _parse_address(ErlNifEnv *env, int argc,
+                                   const ERL_NIF_TERM argv[]) {
   pthread_mutex_lock(expostal_lock);
   do_bootstrap();
 
@@ -94,6 +95,7 @@ static ERL_NIF_TERM parse_address(ErlNifEnv *env, int argc,
   ERL_NIF_TERM components = enif_make_new_map(env);
   ErlNifBinary address_bin;
   if (!enif_inspect_iolist_as_binary(env, argv[0], &address_bin)) {
+    pthread_mutex_unlock(expostal_lock);
     return enif_make_badarg(env);
   }
 
@@ -110,7 +112,7 @@ static ERL_NIF_TERM parse_address(ErlNifEnv *env, int argc,
     ERL_NIF_TERM component_term;
     unsigned char *component_term_bin =
         enif_make_new_binary(env, strlen(component), &component_term);
-    strncpy((char *)component_term_bin, component, strlen(component));
+    strcpy((char *)component_term_bin, component);
 
     enif_make_map_put(env, components, enif_make_atom(env, label),
                       component_term, &components);
@@ -124,19 +126,26 @@ static ERL_NIF_TERM parse_address(ErlNifEnv *env, int argc,
   return components;
 }
 
-static ERL_NIF_TERM classify_language(ErlNifEnv *env, int argc,
-                                      const ERL_NIF_TERM argv[]) {
+static ERL_NIF_TERM _classify_language(ErlNifEnv *env, int argc,
+                                       const ERL_NIF_TERM argv[]) {
   pthread_mutex_lock(expostal_lock);
   do_bootstrap();
 
   ErlNifBinary address_bin;
   if (!enif_inspect_iolist_as_binary(env, argv[0], &address_bin)) {
+    pthread_mutex_unlock(expostal_lock);
     return enif_make_badarg(env);
   }
 
   char *address = strndup((char *)address_bin.data, address_bin.size);
   libpostal_language_classifier_response_t *response =
       libpostal_classify_language(address);
+
+  free(address);
+  if (response == NULL) {
+    pthread_mutex_unlock(expostal_lock);
+    return enif_make_badarg(env);
+  }
 
   const char *language;
 
@@ -148,7 +157,7 @@ static ERL_NIF_TERM classify_language(ErlNifEnv *env, int argc,
     ERL_NIF_TERM language_term;
     unsigned char *language_term_bin =
         enif_make_new_binary(env, strlen(language), &language_term);
-    strncpy((char *)language_term_bin, language, strlen(language));
+    strcpy((char *)language_term_bin, language);
     language_terms[i] = language_term;
   }
   ERL_NIF_TERM probs_term = enif_make_double(env, *response->probs);
@@ -160,7 +169,7 @@ static ERL_NIF_TERM classify_language(ErlNifEnv *env, int argc,
       enif_make_tuple2(env, probs_term, language_list_term);
 
   free(language_terms);
-  free(address);
+  libpostal_language_classifier_response_destroy(response);
 
   pthread_mutex_unlock(expostal_lock);
   return response_tuple_term;
@@ -170,14 +179,14 @@ static ERL_NIF_TERM classify_language(ErlNifEnv *env, int argc,
 #if HAS_DIRTY_SCHEDULER
 static ErlNifFunc funcs[] = {
     {"bootstrap", 0, bootstrap, ERL_NIF_DIRTY_JOB_IO_BOUND},
-    {"classify_language", 1, classify_language, ERL_NIF_DIRTY_JOB_IO_BOUND},
-    {"parse_address", 1, parse_address, ERL_NIF_DIRTY_JOB_IO_BOUND},
-    {"expand_address", 1, expand_address, ERL_NIF_DIRTY_JOB_IO_BOUND}};
+    {"_classify_language", 1, _classify_language, ERL_NIF_DIRTY_JOB_IO_BOUND},
+    {"_parse_address", 1, _parse_address, ERL_NIF_DIRTY_JOB_IO_BOUND},
+    {"_expand_address", 1, _expand_address, ERL_NIF_DIRTY_JOB_IO_BOUND}};
 #else
 static ErlNifFunc funcs[] = {{"bootstrap", 0, bootstrap},
-                             {"classify_language", 1, classify_language},
-                             {"parse_address", 1, parse_address},
-                             {"expand_address", 1, expand_address}};
+                             {"_classify_language", 1, _classify_language},
+                             {"_parse_address", 1, _parse_address},
+                             {"_expand_address", 1, _expand_address}};
 #endif
 
 static int load(ErlNifEnv *env, void **priv, ERL_NIF_TERM info) {

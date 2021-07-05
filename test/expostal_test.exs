@@ -55,6 +55,22 @@ defmodule ExpostalTest do
     end
   end
 
+  describe "Classify" do
+    test "test address expansion" do
+      assert Expostal.classify_language("") == {:error, :argument_error}
+
+      assert Expostal.classify_language("781 Franklin Ave Crown Hts Brooklyn NY") ==
+               {0.9999999997485425, ["en"]}
+
+      assert Expostal.classify_language("Friedrichstraße 128,  Berlin, Germany") ==
+               {0.9999970742636454, ["de"]}
+
+      assert Expostal.classify_language("天津市红桥区一号路一百号") == {0.9241848948924529, ["ja", "zh"]}
+      assert Expostal.classify_language("MAPLE ST.") == {0.9996832089814511, ["en"]}
+      assert Expostal.classify_language("92 rue de l'Église, QC") == {0.9999999997818882, ["fr"]}
+    end
+  end
+
   defp address_in_expansion(original, expanded) do
     Enum.member?(Expostal.expand_address(original), expanded)
   end
