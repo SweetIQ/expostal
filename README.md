@@ -15,10 +15,20 @@ The package can be installed by adding `expostal` to your list of dependencies i
 
 ```elixir
 def deps do
-  [{:expostal, "~> 0.2.0"}]
+  [
+    {:expostal, "~> 0.2.0"}
+  ]
 end
 ```
+or this repo:
 
+```elixir
+def deps do
+  [
+    {:expostal, github: "dkuku/expostal"}
+  ]
+end
+```
 ### Dependencies
 
 Depends on [system-wide installation of libpostal](https://github.com/openvenues/libpostal#installation).
@@ -27,7 +37,7 @@ Depends on [system-wide installation of libpostal](https://github.com/openvenues
 
 ## Usage
 
-Parsing an address: 
+Parsing an address:
 
 ```
 iex> Expostal.parse_address("615 Rene Levesque Ouest, Montreal, QC, Canada")
@@ -37,7 +47,7 @@ iex> Expostal.parse_address("615 Rene Levesque Ouest, Montreal, QC, Canada")
 
 ```
 
-Expanding an address: 
+Expanding an address:
 
 ```
 iex> Expostal.expand_address("781 Franklin Ave Crown Hts Brooklyn NY")
