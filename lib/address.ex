@@ -1,7 +1,9 @@
 defmodule Expostal.Address do
+  @shortdoc "Struct for holding the results returned by libpostal."
   @moduledoc """
   Struct for holding the results returned by libpostal.
-  from the upstream README.md:
+  From the upstream README.md:
+  https://github.com/openvenues/libpostal
 
   * house: venue name e.g. "Brooklyn Academy of Music", and building names e.g. "Empire State Building"
   * category: for category queries like "restaurants", etc.

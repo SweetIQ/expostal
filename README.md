@@ -16,7 +16,7 @@ The package can be installed by adding `expostal` to your list of dependencies i
 ```elixir
 def deps do
   [
-    {:expostal, "~> 0.2.0"}
+    {:expostal, "~> 0.3.0"}
   ]
 end
 ```
@@ -33,9 +33,14 @@ Parsing an address:
 
 ```
 iex> Expostal.parse_address("615 Rene Levesque Ouest, Montreal, QC, Canada")
+%Expostal.Address{
+  city: "montreal",
+  country: "canada",
+  house_number: "615",
+  road: "rene levesque ouest",
+  state: "qc"
+}
 
-%{city: "montreal", country: "canada", house_number: "615",
-  road: "rene levesque ouest", state: "qc"}
 
 ```
 
