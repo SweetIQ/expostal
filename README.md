@@ -15,7 +15,9 @@ The package can be installed by adding `expostal` to your list of dependencies i
 
 ```elixir
 def deps do
-  [{:expostal, "~> 0.2.0"}]
+  [
+    {:expostal, "~> 0.2.0"}
+  ]
 end
 ```
 
@@ -27,7 +29,7 @@ Depends on [system-wide installation of libpostal](https://github.com/openvenues
 
 ## Usage
 
-Parsing an address: 
+Parsing an address:
 
 ```
 iex> Expostal.parse_address("615 Rene Levesque Ouest, Montreal, QC, Canada")
@@ -37,7 +39,7 @@ iex> Expostal.parse_address("615 Rene Levesque Ouest, Montreal, QC, Canada")
 
 ```
 
-Expanding an address: 
+Expanding an address:
 
 ```
 iex> Expostal.expand_address("781 Franklin Ave Crown Hts Brooklyn NY")
@@ -46,6 +48,14 @@ iex> Expostal.expand_address("781 Franklin Ave Crown Hts Brooklyn NY")
   "781 franklin avenue crown heights brooklyn ny"]
 ```
 
+Classifying language:
+Returns a tuple with probability of the most probable language for a given address and a language list
+
+```
+iex> Expostal.classify_language("agricola pl.")
+{0.508300861587544, ["en", "fr", "es", "de"]}
+
+```
 ## Documentation
 
 View the docs on [https://hexdocs.pm/expostal](https://hexdocs.pm/expostal), or
