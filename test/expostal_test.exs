@@ -6,30 +6,80 @@ defmodule ExpostalTest do
     address = "615 Rene Levesque Ouest, Montreal, QC, Canada"
     parsed = Expostal.parse_address(address)
 
-    assert parsed == %{
-             country: "canada",
+    assert parsed == %Expostal.Address{
              city: "montreal",
+             country: "canada",
              house_number: "615",
              road: "rene levesque ouest",
-             state: "qc"
+             state: "qc",
+             category: nil,
+             city_district: nil,
+             country_region: nil,
+             entrance: nil,
+             house: nil,
+             island: nil,
+             level: nil,
+             near: nil,
+             po_box: nil,
+             postcode: nil,
+             staircase: nil,
+             state_district: nil,
+             suburb: nil,
+             unit: nil,
+             world_region: nil
            }
 
     address = "92 rue de l'Église, QC"
     parsed = Expostal.parse_address(address)
 
-    assert parsed == %{
-             house_number: "92",
-             road: "rue de l'église",
-             state: "qc"
-           }
+    assert parsed ==
+             %Expostal.Address{
+               house_number: "92",
+               road: "rue de l'église",
+               state: "qc",
+               category: nil,
+               city: nil,
+               city_district: nil,
+               country: nil,
+               country_region: nil,
+               entrance: nil,
+               house: nil,
+               island: nil,
+               level: nil,
+               near: nil,
+               po_box: nil,
+               postcode: nil,
+               staircase: nil,
+               state_district: nil,
+               suburb: nil,
+               unit: nil,
+               world_region: nil
+             }
 
     address = "天津市红桥区一号路一百号"
     parsed = Expostal.parse_address(address)
 
-    assert parsed == %{
+    assert parsed == %Expostal.Address{
              city: "天津市红桥区",
+             house_number: "一百号",
              road: "一号路",
-             house_number: "一百号"
+             category: nil,
+             city_district: nil,
+             country: nil,
+             country_region: nil,
+             entrance: nil,
+             house: nil,
+             island: nil,
+             level: nil,
+             near: nil,
+             po_box: nil,
+             postcode: nil,
+             staircase: nil,
+             state: nil,
+             state_district: nil,
+             suburb: nil,
+             unit: nil,
+             world_region: nil
            }
   end
 

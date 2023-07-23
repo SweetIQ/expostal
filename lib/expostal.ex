@@ -44,12 +44,20 @@ defmodule Expostal do
   ## Examples
 
       iex> Expostal.parse_address("615 Rene Levesque Ouest, Montreal, QC, Canada")
-      %{city: "montreal", country: "canada", house_number: "615",
-        road: "rene levesque ouest", state: "qc"}
+      %Expostal.Address{
+              city: "montreal",
+              country: "canada",
+              house_number: "615",
+              road: "rene levesque ouest",
+              state: "qc"
+            }
 
   """
   @spec parse_address(address :: String.t()) :: map
-  def parse_address(address), do: _parse_address(address)
+  def parse_address(address) do
+    parsed = _parse_address(address)
+    struct(Expostal.Address, parsed)
+  end
 
   defp _parse_address(_address) do
     case :erlang.phash2(1, 1) do
