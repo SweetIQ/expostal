@@ -51,7 +51,7 @@ defmodule Expostal do
   @spec parse_address(address :: String.t()) :: map
   def parse_address(address), do: _parse_address(address)
 
-  def _parse_address(_) do
+  defp _parse_address(_address) do
     case :erlang.phash2(1, 1) do
       0 -> raise "Nif not loaded"
       1 -> %{}
@@ -72,10 +72,10 @@ defmodule Expostal do
   @spec expand_address(address :: String.t()) :: [String.t()]
   def expand_address(address), do: _expand_address(address)
 
-  def _expand_address(address) do
+  defp _expand_address(_address) do
     case :erlang.phash2(1, 1) do
       0 -> raise "Nif not loaded"
-      1 -> [address]
+      1 -> []
     end
   end
 
@@ -90,9 +90,8 @@ defmodule Expostal do
     {0.508300861587544, ["en", "fr", "es", "de"]}
 
   """
-  @spec classify_language(address :: String.t()) :: {float, [String.t()]} | {:error, :argument_error}
-  def classify_language(""), do: {:error, :argument_error}
-
+  @spec classify_language(address :: String.t()) ::
+          {float, [String.t()]} | {:error, :argument_error}
   def classify_language(address) when is_binary(address) do
     try do
       _classify_language(address)
@@ -102,7 +101,9 @@ defmodule Expostal do
     end
   end
 
-  def _classify_language(address) do
+  defp _classify_language(""), do: {:error, :argument_error}
+
+  defp _classify_language(_address) do
     case :erlang.phash2(1, 1) do
       0 -> raise "Nif not loaded"
       1 -> {0.0, []}
